@@ -23,7 +23,7 @@
                 assign hide_menu_load = true
             endif
         endif
-
+        assign hidden_nav_handles = 'about-us,contact-us,sobre-nosotros,contacto' | split: ','
     -%}
     {%- for link in menu -%}
         {%- liquid
@@ -31,6 +31,9 @@
             assign sale_item_lv2 = section.settings.sale_item_2 | split: "," | strip | downcase | handle
             assign sale_item_lv3 = section.settings.sale_item_3 | split: "," | strip | downcase | handle
             assign title = link.title | escape | downcase | handle
+            if hidden_nav_handles contains title
+                continue
+            endif
             if section.settings.label_position != 'none'
                 assign show_label_blink = section.settings.show_label_blink
                 assign new_label_1 = section.settings.new_label_1 | split: "," | strip | downcase | handle

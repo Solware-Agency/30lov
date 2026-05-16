@@ -1,4 +1,13 @@
+{%- liquid
+    assign hidden_nav_handles = 'about-us,contact-us,sobre-nosotros,contacto' | split: ','
+-%}
 {%- for link in menu -%}
+    {%- liquid
+        assign title = link.title | escape | downcase | handle
+        if hidden_nav_handles contains title
+            continue
+        endif
+    -%}
 	<li class="menu-lv-item menu-lv-1 text-left no-megamenu{% if link != blank %} dropdown{% endif %}">
 		{%- if link.links != blank -%}
 			<p class="menu-lv-1__action list-menu__item link focus-inset{% if show_icon %} menu-lv__flex{% endif %} menu_mobile_link">

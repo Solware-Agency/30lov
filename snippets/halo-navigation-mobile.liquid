@@ -15,12 +15,18 @@
             <div class="menu-drawer__navigation-container">
                 <nav class="menu-drawer__navigation">
                     <ul class="menu-drawer__menu list-menu" role="list">
+                        {%- liquid
+                            assign hidden_nav_handles = 'about-us,contact-us,sobre-nosotros,contacto' | split: ','
+                        -%}
                         {%- for link in section.settings.menu.links -%}
                             {%- liquid
                                 assign sale_item_lv1 = section.settings.sale_item_1 | split: "," | strip | downcase | handle
                                 assign sale_item_lv2 = section.settings.sale_item_2 | split: "," | strip | downcase | handle
                                 assign sale_item_lv3 = section.settings.sale_item_3 | split: "," | strip | downcase | handle
                                 assign title = link.title | escape | downcase | handle
+                                if hidden_nav_handles contains title
+                                    continue
+                                endif
                                 if section.settings.show_label
                                     assign new_label = section.settings.new_label | split: "," | strip | downcase | handle
                                     assign sale_label = section.settings.sale_label | split: "," | strip | downcase | handle
