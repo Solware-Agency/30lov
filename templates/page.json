@@ -14,18 +14,17 @@
       "disabled": true,
       "settings": {}
     },
-    "1779221639acbcd4a9": {
+    "1779224384821f1128": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_acdbbaf_hnEn7Y": {
-          "type": "ai_gen_block_acdbbaf",
+        "ai_gen_block_8d3a640_LqedXb": {
+          "type": "ai_gen_block_8d3a640",
           "settings": {
-            "section_heading": "CONTACT",
-            "email_address": "30LOVSTORE@GMAIL.COM",
-            "whatsapp_number": "786-651-8059",
-            "phone_number": "786-651-8059",
-            "business_hours": "Monday to Friday, 9 AM – 6 PM",
-            "business_address": "Miami, FL",
+            "heading": "CONTACT",
+            "email": "30LOVSTORE@GMAIL.COM",
+            "whatsapp": "786-651-8059",
+            "hours": "Monday to Friday, 9 AM – 6 PM",
+            "address": "Miami, FL",
             "button_label": "SEND",
             "background_color": "#ffffff",
             "text_color": "#000000"
@@ -34,13 +33,13 @@
         }
       },
       "block_order": [
-        "ai_gen_block_acdbbaf_hnEn7Y"
+        "ai_gen_block_8d3a640_LqedXb"
       ],
       "settings": {}
     }
   },
   "order": [
     "main",
-    "1779221639acbcd4a9"
+    "1779224384821f1128"
   ]
 }
