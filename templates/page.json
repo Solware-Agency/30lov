@@ -1,1 +1,45 @@
-{"sections":{"main":{"type":"main-page","settings":{}}},"order":["main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "1779221639acbcd4a9": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_acdbbaf_hnEn7Y": {
+          "type": "ai_gen_block_acdbbaf",
+          "settings": {
+            "section_heading": "CONTACT",
+            "email_address": "30LOVSTORE@GMAIL.COM",
+            "whatsapp_number": "786-651-8059",
+            "phone_number": "786-651-8059",
+            "business_hours": "Monday to Friday, 9 AM – 6 PM",
+            "business_address": "Miami, FL",
+            "button_label": "SEND",
+            "background_color": "#FFFFFF",
+            "text_color": "#000000"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_acdbbaf_hnEn7Y"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "1779221639acbcd4a9"
+  ]
+}
