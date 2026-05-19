@@ -14,7 +14,7 @@
     
     **Contact form fields** (in a 2-column grid layout):
     - First Name (left) | Last Name (right)
-    - Email Address (left) | Phone Number (right)
+    - Email Address (left) |
     - Message (full width textarea)
     - SEND button (full width, black background, white text, uppercase)
     
@@ -237,13 +237,6 @@
         <div class="ai-contact-info-label-{{ ai_gen_id }}">WhatsApp</div>
         <div class="ai-contact-info-value-{{ ai_gen_id }}">
           <a href="https://wa.me/{{ block.settings.whatsapp_number | replace: '-', '' | replace: ' ', '' }}">{{ block.settings.whatsapp_number }}</a>
-        </div>
-      </div>
-
-      <div class="ai-contact-info-item-{{ ai_gen_id }}">
-        <div class="ai-contact-info-label-{{ ai_gen_id }}">Phone</div>
-        <div class="ai-contact-info-value-{{ ai_gen_id }}">
-          <a href="tel:{{ block.settings.phone_number | replace: '-', '' | replace: ' ', '' }}">{{ block.settings.phone_number }}</a>
         </div>
       </div>
 
