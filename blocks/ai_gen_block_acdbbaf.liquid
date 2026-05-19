@@ -9,6 +9,7 @@
     **Contact info block** (displayed in two columns above the form):
     - EMAIL: 30LOVSTORE@GMAIL.COM
     - WHATSAPP: 786-651-8059
+    - PHONE: 786-651-8059
     - HOURS: Monday to Friday, 9 AM – 6 PM
     - ADDRESS: Miami, FL
     
@@ -29,6 +30,7 @@
     - Section heading
     - Email address
     - WhatsApp number
+    - Phone number
     - Business hours
     - Business address
     - Button label
@@ -241,6 +243,13 @@
       </div>
 
       <div class="ai-contact-info-item-{{ ai_gen_id }}">
+        <div class="ai-contact-info-label-{{ ai_gen_id }}">Phone</div>
+        <div class="ai-contact-info-value-{{ ai_gen_id }}">
+          <a href="tel:{{ block.settings.phone_number | replace: '-', '' | replace: ' ', '' }}">{{ block.settings.phone_number }}</a>
+        </div>
+      </div>
+
+      <div class="ai-contact-info-item-{{ ai_gen_id }}">
         <div class="ai-contact-info-label-{{ ai_gen_id }}">Hours</div>
         <div class="ai-contact-info-value-{{ ai_gen_id }}">{{ block.settings.business_hours }}</div>
       </div>
@@ -388,6 +397,12 @@
       "type": "text",
       "id": "whatsapp_number",
       "label": "WhatsApp number",
+      "default": "786-651-8059"
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone number",
       "default": "786-651-8059"
     },
     {
