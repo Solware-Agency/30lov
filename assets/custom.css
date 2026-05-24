@@ -9,3 +9,12 @@
 // Please use only CSS to style the layout.
 //
 // =============================================================================*/
+
+
+.cart-text,
+span.cart-text,
+.header-classic__item .cart-text,
+.wishlist-text,
+.header-classic__item .wishlist-text {
+  display: none !important;
+}
