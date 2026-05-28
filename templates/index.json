@@ -725,6 +725,10 @@
         "mg_bottom_tablet": 50,
         "mg_bottom_mobile": 50
       }
+    },
+    "1779935011e816552b": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
@@ -732,6 +736,7 @@
     "163247026462da6862",
     "video_block_VCYE3j",
     "customer_review_block_VWRRGT",
-    "instagram_BUqXXR"
+    "instagram_BUqXXR",
+    "1779935011e816552b"
   ]
 }
