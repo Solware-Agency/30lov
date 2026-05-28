@@ -18,3 +18,8 @@ span.cart-text,
 .header-classic__item .wishlist-text {
   display: none !important;
 }
+
+span.pattern[style*="background-color: clay"] {
+  background-color: #7f2913 !important;
+  background-image: none !important;
+}
