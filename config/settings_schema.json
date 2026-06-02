@@ -6082,7 +6082,7 @@
         "type": "checkbox",
         "id": "show_quick_view_sold_in",
         "label": "t:sections.main-product.settings.sold_in_last.label__1",
-        "default": true
+        "default": false
       },
       {
         "type": "textarea",
