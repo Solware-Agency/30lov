@@ -19,7 +19,7 @@
                     <span id="ShareMessage-{{ product.id }}" class="share-button__message hidden" role="status" aria-hidden="true">{{ 'general.share.success_message' | t }}</span>
                     {%- if settings.enable_social_share != blank -%}
                         {%- if share_layout == '2' or share_layout == '3' -%}
-                            <div class="share_toolbox clearfix"><label class="form-label">{{ 'general.share.share' | t }}</label> {% render 'social_share_icon' %}</div>
+                            <div class="share_toolbox clearfix">{% render 'social_share_icon' %}</div>
                         {%- endif -%}
                     {%- endif -%}
                 </div>
