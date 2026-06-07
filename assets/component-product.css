@@ -1539,6 +1539,10 @@
     clear: both;
 }
 
+.productView-payment .shopify-payment-button .shopify-payment-button__more-options {
+    display: none !important;
+}
+
 .productView-payment .shopify-payment-button [data-testid="Checkout-button"],
 .productView-payment .shopify-payment-button .shopify-payment-button__button--unbranded {
     display: block;
