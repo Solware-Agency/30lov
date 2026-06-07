@@ -746,21 +746,8 @@
                             </div>
                             {%- if show_dynamic_checkout -%}
                                 <div class="productView-groupBottom">
-                                    {%- if settings.show_global_checkbox -%}
-                                        <div class="productView-groupItem">
-                                            {%- if settings.show_global_checkbox -%}
-                                                <div class="productView-checkbox global-checkbox">
-                                                    <input class="global-checkbox--input" type="checkbox" name="conditions" id="product_conditions_{{ product.id }}" data-target="#product-checkout-{{ product.id }}">
-                                                    <label class="global-checkbox--label form-label--checkbox" for="product_conditions_{{ product.id }}">{{ settings.global_checkbox_text }}</label>
-                                                    {%- if settings.global_checkbox_link_text != blank -%}
-                                                        <a href="javascript:void(0)" data-term-condition>{{ settings.global_checkbox_link_text | escape }}</a>
-                                                    {%- endif -%}
-                                                </div>
-                                            {%- endif -%}
-                                        </div>
-                                    {%- endif -%}
                                     <div class="productView-groupItem">
-                                        <div class="productView-payment" {% if settings.show_global_checkbox %} disabled="disabled"{% endif %} id="product-checkout-{{ product.id }}" style="--bin-color: {{ settings.bin_color }};--bin-bg-color: {% if settings.bin_bg_color_gradient != blank %}{{ settings.bin_bg_color_gradient }}{% else %}{{ settings.bin_bg_color }}{% endif %};--bin-border-color: {{ settings.bin_border_color }};--bin-color-hover: {{ settings.bin_color_hover }};--bin-bg-color-hover: {% if settings.bin_bg_color_hover_gradient != blank %}{{ settings.bin_bg_color_hover_gradient }}{% else %}{{ settings.bin_bg_color_hover }}{% endif %};--bin-border-color-hover: {{ settings.bin_border_color_hover }}">{{ form | payment_button }}</div>
+                                        <div class="productView-payment" id="product-checkout-{{ product.id }}" style="--bin-color: {{ settings.bin_color }};--bin-bg-color: {% if settings.bin_bg_color_gradient != blank %}{{ settings.bin_bg_color_gradient }}{% else %}{{ settings.bin_bg_color }}{% endif %};--bin-border-color: {{ settings.bin_border_color }};--bin-color-hover: {{ settings.bin_color_hover }};--bin-bg-color-hover: {% if settings.bin_bg_color_hover_gradient != blank %}{{ settings.bin_bg_color_hover_gradient }}{% else %}{{ settings.bin_bg_color_hover }}{% endif %};--bin-border-color-hover: {{ settings.bin_border_color_hover }}">{{ form | payment_button }}</div>
                                     </div>
                                 </div>
                             {%- endif -%}
