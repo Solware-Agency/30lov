@@ -82,7 +82,7 @@
         "5939cbc0-a9fd-48e0-adcd-1d945e05dc99": {
           "type": "text",
           "settings": {
-            "free_shipping_text": "<p>Free shipping on all orders over $300</p>",
+            "free_shipping_text": "",
             "text_color": "#232323",
             "spacing": 15
           }
