@@ -82,7 +82,7 @@
         "5939cbc0-a9fd-48e0-adcd-1d945e05dc99": {
           "type": "text",
           "settings": {
-            "free_shipping_text": "<p>Free shipping on all orders over $300</p>",
+            "free_shipping_text": "",
             "text_color": "#232323",
             "spacing": 15
           }
@@ -329,7 +329,7 @@
         "padding_full_width": 0,
         "header_navigation_bg": "#e4e4e4",
         "header_navigation_bg_gradient": "",
-        "sticky_header_type": "on_scroll",
+        "sticky_header_type": "always",
         "sticky_header_width": "full",
         "enable_transparent": false,
         "transparent_color": "#232323",

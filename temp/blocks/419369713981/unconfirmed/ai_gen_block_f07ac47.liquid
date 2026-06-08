@@ -1,0 +1,592 @@
+{% doc %}
+  @prompt
+    Create a wishlist drawer/side panel that slides in from the right side of the screen (similar to the cart drawer). The drawer should:
+    - Read saved wishlist products from localStorage (key: 'wishlist', storing product IDs or handles)
+    - Display saved products with their image, title, price, and an "Add to Cart" button
+    - Have a close button (X) at the top right
+    - Have a remove button (trash/X icon) per product to remove it from the wishlist
+    - Open when the existing "Add To Wishlist" heart icon button is clicked (the button already exists on product cards and saves to localStorage)
+    - Show an empty state message when no products are saved
+    - Match a minimalist black and white premium fashion aesthetic
+    - Be accessible and mobile-friendly
+    - Not conflict with the existing wishlist button logic already in the theme
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-wishlist-drawer-{{ ai_gen_id }} {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background-color: {{ block.settings.drawer_bg_color }};
+    z-index: 9999;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ai-wishlist-drawer-{{ ai_gen_id }}.active {
+    right: 0;
+  }
+
+  .ai-wishlist-overlay-{{ ai_gen_id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .ai-wishlist-overlay-{{ ai_gen_id }}.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .ai-wishlist-header-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-wishlist-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_font_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ai-wishlist-close-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: {{ block.settings.text_color }};
+    transition: opacity 0.2s ease;
+  }
+
+  .ai-wishlist-close-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  .ai-wishlist-close-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+  }
+
+  .ai-wishlist-content-{{ ai_gen_id }} {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .ai-wishlist-empty-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-wishlist-empty-icon-{{ ai_gen_id }} {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    opacity: 0.3;
+  }
+
+  .ai-wishlist-empty-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: {{ block.settings.text_color }};
+  }
+
+  .ai-wishlist-empty-text-{{ ai_gen_id }} {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .ai-wishlist-items-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ai-wishlist-item-{{ ai_gen_id }} {
+    display: flex;
+    gap: 15px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-wishlist-item-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .ai-wishlist-item-image-{{ ai_gen_id }} {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: #f5f5f5;
+  }
+
+  .ai-wishlist-item-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-wishlist-item-details-{{ ai_gen_id }} {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ai-wishlist-item-title-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 500;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .ai-wishlist-item-title-{{ ai_gen_id }} a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ai-wishlist-item-title-{{ ai_gen_id }} a:hover {
+    text-decoration: underline;
+  }
+
+  .ai-wishlist-item-price-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-wishlist-item-actions-{{ ai_gen_id }} {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+  }
+
+  .ai-wishlist-add-to-cart-{{ ai_gen_id }} {
+    flex: 1;
+    padding: 10px 16px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background-color 0.2s ease;
+  }
+
+  .ai-wishlist-add-to-cart-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+  }
+
+  .ai-wishlist-remove-{{ ai_gen_id }} {
+    padding: 10px;
+    background: none;
+    border: 1px solid {{ block.settings.border_color }};
+    cursor: pointer;
+    color: {{ block.settings.text_color }};
+    transition: opacity 0.2s ease;
+  }
+
+  .ai-wishlist-remove-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  .ai-wishlist-remove-{{ ai_gen_id }} svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-wishlist-drawer-{{ ai_gen_id }} {
+      max-width: 100%;
+    }
+
+    .ai-wishlist-item-image-{{ ai_gen_id }} {
+      width: 80px;
+      height: 80px;
+    }
+  }
+{% endstyle %}
+
+<wishlist-drawer-{{ ai_gen_id }}
+  class="ai-wishlist-drawer-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-wishlist-header-{{ ai_gen_id }}">
+    <h2 class="ai-wishlist-title-{{ ai_gen_id }}">{{ block.settings.drawer_title }}</h2>
+    <button
+      class="ai-wishlist-close-{{ ai_gen_id }}"
+      aria-label="Close wishlist"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="ai-wishlist-content-{{ ai_gen_id }}">
+    <div class="ai-wishlist-empty-{{ ai_gen_id }}" style="display: none;">
+      <div class="ai-wishlist-empty-icon-{{ ai_gen_id }}">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      </div>
+      <p class="ai-wishlist-empty-text-{{ ai_gen_id }}">{{ block.settings.empty_message }}</p>
+    </div>
+
+    <div class="ai-wishlist-items-{{ ai_gen_id }}"></div>
+  </div>
+</wishlist-drawer-{{ ai_gen_id }}>
+
+<div class="ai-wishlist-overlay-{{ ai_gen_id }}"></div>
+
+<script>
+  (function() {
+    class WishlistDrawer{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.drawer = this;
+        this.overlay = document.querySelector('.ai-wishlist-overlay-{{ ai_gen_id }}');
+        this.closeBtn = this.querySelector('.ai-wishlist-close-{{ ai_gen_id }}');
+        this.itemsContainer = this.querySelector('.ai-wishlist-items-{{ ai_gen_id }}');
+        this.emptyState = this.querySelector('.ai-wishlist-empty-{{ ai_gen_id }}');
+      }
+
+      connectedCallback() {
+        this.setupEventListeners();
+        this.observeWishlistButtons();
+      }
+
+      setupEventListeners() {
+        this.closeBtn.addEventListener('click', () => this.close());
+        this.overlay.addEventListener('click', () => this.close());
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.classList.contains('active')) {
+            this.close();
+          }
+        });
+      }
+
+      observeWishlistButtons() {
+        const observer = new MutationObserver(() => {
+          this.attachWishlistButtonListeners();
+        });
+
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
+
+        this.attachWishlistButtonListeners();
+      }
+
+      attachWishlistButtonListeners() {
+        const wishlistButtons = document.querySelectorAll('[data-wishlist-button]');
+        wishlistButtons.forEach(button => {
+          if (!button.hasAttribute('data-drawer-listener-{{ ai_gen_id }}')) {
+            button.setAttribute('data-drawer-listener-{{ ai_gen_id }}', 'true');
+            button.addEventListener('click', (e) => {
+              setTimeout(() => {
+                this.open();
+                this.renderWishlist();
+              }, 100);
+            });
+          }
+        });
+      }
+
+      open() {
+        this.classList.add('active');
+        this.overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        this.renderWishlist();
+      }
+
+      close() {
+        this.classList.remove('active');
+        this.overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      getWishlist() {
+        try {
+          const wishlist = localStorage.getItem('wishlist');
+          return wishlist ? JSON.parse(wishlist) : [];
+        } catch (e) {
+          console.error('Error reading wishlist:', e);
+          return [];
+        }
+      }
+
+      removeFromWishlist(productId) {
+        try {
+          let wishlist = this.getWishlist();
+          wishlist = wishlist.filter(id => id !== productId);
+          localStorage.setItem('wishlist', JSON.stringify(wishlist));
+          this.renderWishlist();
+
+          document.querySelectorAll(`[data-wishlist-button][data-product-id="${productId}"]`).forEach(btn => {
+            btn.classList.remove('active');
+          });
+        } catch (e) {
+          console.error('Error removing from wishlist:', e);
+        }
+      }
+
+      async renderWishlist() {
+        const wishlist = this.getWishlist();
+
+        if (wishlist.length === 0) {
+          this.emptyState.style.display = 'block';
+          this.itemsContainer.innerHTML = '';
+          return;
+        }
+
+        this.emptyState.style.display = 'none';
+
+        try {
+          const productPromises = wishlist.map(productId => 
+            fetch(`/products/${productId}.js`)
+              .then(res => res.json())
+              .catch(() => null)
+          );
+
+          const products = await Promise.all(productPromises);
+          const validProducts = products.filter(p => p !== null);
+
+          this.itemsContainer.innerHTML = validProducts.map(product => {
+            const variant = product.variants[0];
+            const price = this.formatMoney(variant.price);
+            const imageUrl = product.featured_image || '';
+
+            return `
+              <div class="ai-wishlist-item-{{ ai_gen_id }}" data-product-id="${product.id}">
+                <div class="ai-wishlist-item-image-{{ ai_gen_id }}">
+                  ${imageUrl ? `<img src="${imageUrl}" alt="${product.title}" loading="lazy">` : ''}
+                </div>
+                <div class="ai-wishlist-item-details-{{ ai_gen_id }}">
+                  <h3 class="ai-wishlist-item-title-{{ ai_gen_id }}">
+                    <a href="${product.url}">${product.title}</a>
+                  </h3>
+                  <div class="ai-wishlist-item-price-{{ ai_gen_id }}">${price}</div>
+                  <div class="ai-wishlist-item-actions-{{ ai_gen_id }}">
+                    <button 
+                      class="ai-wishlist-add-to-cart-{{ ai_gen_id }}"
+                      data-variant-id="${variant.id}"
+                      ${!variant.available ? 'disabled' : ''}
+                    >
+                      ${variant.available ? 'Add to cart' : 'Sold out'}
+                    </button>
+                    <button 
+                      class="ai-wishlist-remove-{{ ai_gen_id }}"
+                      data-product-id="${product.handle}"
+                      aria-label="Remove from wishlist"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          this.attachItemEventListeners();
+        } catch (e) {
+          console.error('Error rendering wishlist:', e);
+        }
+      }
+
+      attachItemEventListeners() {
+        this.querySelectorAll('.ai-wishlist-remove-{{ ai_gen_id }}').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const productId = e.currentTarget.getAttribute('data-product-id');
+            this.removeFromWishlist(productId);
+          });
+        });
+
+        this.querySelectorAll('.ai-wishlist-add-to-cart-{{ ai_gen_id }}').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const variantId = e.currentTarget.getAttribute('data-variant-id');
+            await this.addToCart(variantId, e.currentTarget);
+          });
+        });
+      }
+
+      async addToCart(variantId, button) {
+        const originalText = button.textContent;
+        button.textContent = 'Adding...';
+        button.disabled = true;
+
+        try {
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: 1
+            })
+          });
+
+          if (response.ok) {
+            button.textContent = 'Added!';
+            
+            document.dispatchEvent(new CustomEvent('cart:refresh'));
+            
+            setTimeout(() => {
+              button.textContent = originalText;
+              button.disabled = false;
+            }, 2000);
+          } else {
+            throw new Error('Failed to add to cart');
+          }
+        } catch (e) {
+          console.error('Error adding to cart:', e);
+          button.textContent = 'Error';
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+          }, 2000);
+        }
+      }
+
+      formatMoney(cents) {
+        const amount = cents / 100;
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: '{{ cart.currency.iso_code | default: "USD" }}'
+        }).format(amount);
+      }
+    }
+
+    customElements.define('wishlist-drawer-{{ ai_gen_id }}', WishlistDrawer{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Wishlist drawer",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "drawer_title",
+      "label": "Drawer title",
+      "default": "My Wishlist"
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "Empty message",
+      "default": "Your wishlist is empty"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title font size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "drawer_bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button hover background",
+      "default": "#333333"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wishlist drawer"
+    }
+  ]
+}
+{% endschema %}
