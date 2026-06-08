@@ -57,14 +57,6 @@
                 </div>
             </div>
             <div class="wishlist-footer pagination-right{% if settings.banner_animation == 'effect_fade_up' %} scroll-trigger animate--slide-in{% endif %}" data-wishlist-footer>
-                <a class="wishlist-share link link-underline" href="mailto:?subject= {{ page.title | strip_html }}&amp;body=" data-wishlist-share>
-                    <div class="mail-icon-container">
-                        {% render 'icon-mail' %}
-                    </div>
-                    <span class="text">
-                        {{ 'wishlist.general.share' | t }}
-                    </span>
-                </a>
                 <ul class="pagination__list list-unstyled" role="list"  id="wishlist-paginate"></ul>
             </div>
         </div>
@@ -178,7 +170,6 @@
                 if (wishlistList.length > 0) {
                     try {
                         await Promise.all(wishlistList.map((handle, index) => this.setProductForWishlistPage(handle, index, wishlistList.length)));
-                        this.updateShareWishlistViaMail();
                         window.sharedFunctions?.calculateTranslateYHeight();
                         this.calculateCard06Padding();
 
@@ -188,7 +179,6 @@
                         this.setDefaultLayout();
 
                         document.addEventListener('updatepagination', this.wishlistPagination.bind(this));
-                        document.addEventListener('updatewishlistmail', this.updateShareWishlistViaMail.bind(this));
                         document.addEventListener('addwishlistitem', async (e) => {
                             const handle = e.detail.handle;
                             await this.setProductForWishlistPage(handle);
@@ -383,24 +373,6 @@
             });
         }
 
-        updateShareWishlistViaMail() {
-            const regex = /(<([^>]+)>)/ig;
-            const addedItems = document.querySelectorAll('[data-wishlist-added]');
-
-            const shareLinkElement = document.querySelector('[data-wishlist-share]');
-            let href = 'mailto:?subject= Wish List&body=';
-
-            addedItems.forEach((item, index) => {
-                const price = item.querySelector('.price__sale .price__last .price-item')?.textContent || item.querySelector('.price__regular .price__last .price-item')?.textContent;
-                const title = item.querySelector('[data-product-title]')?.dataset.productTitle;
-                const url = item.querySelector('[data-product-url]')?.dataset.productUrl;
-
-                href += encodeURIComponent(title + '\nPrice: ' + price?.replace(regex, '') + '\nLink: ' + window.location.protocol + '//' + window.location.hostname + url +'\n\n');
-            })
-
-            shareLinkElement.href = href;
-        }
-
         calculateCard06Padding() {
             if (!document.body.classList.contains('product-card-layout-06')) return;
 
@@ -422,12 +394,6 @@
     #WishlistSection-{{ section.id }}{
         padding-top: {{ padding_top }};
         padding-bottom: {{ padding_bottom }};
-    }
-
-    #WishlistSection-{{ section.id }} .wishlist-footer .wishlist-share {
-        display: flex;
-        align-items: center;
-        gap: 15px;
     }
 
     @media (max-width: 1024px) {
