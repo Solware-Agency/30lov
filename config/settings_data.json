@@ -116,6 +116,7 @@
     "swatch_type": "color",
     "customization_option_1": "Input Text",
     "customization_option_2": "Input File",
+    "link_wishlist": "/pages/wishlist",
     "enable_lazyload": true,
     "trust_image_product_1": "shopify://shop_images/image-trust_9cf48f22-6c8a-4a39-b604-64b168dc56be.jpg",
     "trust_image_product_3": "shopify://shop_images/security-image-3.png",
