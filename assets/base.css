@@ -7334,3 +7334,9 @@ summary::-webkit-details-marker {
         transition: none !important;
     }
 }
+
+#shopify-section-template--27127298425149__video_block_VCYE3j video {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+}
