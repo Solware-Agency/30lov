@@ -149,11 +149,11 @@
                         {%- endif -%}
                     {%- endif -%}
                 {%- else -%}
-                <video class="js-video{% if section.settings.url_mp4_mb != blank %} slide-pc{% endif %}"{% unless videoSound %} muted{% endunless %} playsinline preload="none" autoplay loop controls>
+                <video class="js-video{% if section.settings.url_mp4_mb != blank %} slide-pc{% endif %}"{% unless videoSound %} muted{% endunless %} playsinline preload="none" autoplay loop>
                         <source type="video/mp4" src="{{ section.settings.url_mp4 }}">
                     </video>
                     {%- if section.settings.url_mp4_mb != blank -%}
-                        <video class="js-video slide-mb"{% unless videoSound %} muted{% endunless %} playsinline preload="none" autoplay loop controls>
+                        <video class="js-video slide-mb"{% unless videoSound %} muted{% endunless %} playsinline preload="none" autoplay loop>
                             <source type="video/mp4" src="{{ section.settings.url_mp4_mb }}">
                         </video>
                     {%- endif -%}
