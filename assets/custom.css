@@ -25,10 +25,10 @@ span.pattern[style*="background-color: clay"] {
 }
 
 @media (max-width: 749px) {
-  .footer-01 .footer-text-block {
+  .image_logo {
     text-align: center;
   }
-  .footer-01 .footer-text-block img {
+  .image_logo img {
     margin-left: auto;
     margin-right: auto;
     display: block;
