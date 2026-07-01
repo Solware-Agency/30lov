@@ -4,8 +4,19 @@
         <div class="site-nav-mobile nav-menu-tab"></div>
         <div class="site-nav-mobile nav" data-navigation-mobile>
           <div class="menu-heading-mobile halo-sidebar-header">
-            <span class="title">{{ 'general.common.menu' | t }}</span>
-            <button type="button" class="halo-sidebar-close" data-menu-close-sidebar aria-label="{{ 'general.common.close' | t }}">{% render 'icon-close' %}{{ 'general.common.close' | t }}</button>
+  {%- if settings.logo != blank -%}
+    <a href="{{ routes.root_url }}" class="menu-heading-logo">
+      <img
+        src="{{ settings.logo | img_url: '120x' }}"
+        alt="{{ shop.name }}"
+        style="max-width: 100px; height: auto; display: block;"
+      >
+    </a>
+  {%- else -%}
+    <span class="title">{{ shop.name }}</span>
+  {%- endif -%}
+  <button type="button" class="halo-sidebar-close" ...>
+
           </div>
           <ul class="list-menu-loading" role="list">
             {%- for i in (1..8)-%}
