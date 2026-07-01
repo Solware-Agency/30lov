@@ -159,6 +159,10 @@
     max-width: 300px;
 }
 
+.mobile-description-toggle {
+    display: none;
+}
+
 .pdViewTab-close {
     position: absolute;
     top: 42px;
@@ -251,6 +255,73 @@ body.tab-popup-show {
 @media screen and (max-width: 550px) {
     .tabs-contents .toggle-content.show-mobile {
         display: block;
+    }
+
+    .productView-tab .mobile-inline-description-tab {
+        display: block;
+    }
+
+    .productView-tab .mobile-inline-description-tab .toggleLink.mobile-inline-description {
+        pointer-events: none;
+        padding-right: 0;
+    }
+
+    .productView-tab .mobile-inline-description-tab .toggleLink.mobile-inline-description .icon-plus,
+    .productView-tab .mobile-inline-description-tab .toggleLink.mobile-inline-description .icon-dropdown {
+        display: none;
+    }
+
+    .productView-tab .mobile-inline-description-tab .toggle-content.mobile-inline-description {
+        display: block !important;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        width: auto;
+        height: auto;
+        max-height: none;
+        transform: none;
+        padding: 0 0 18px;
+        background: transparent;
+        z-index: auto;
+        overflow: visible;
+    }
+
+    .productView-tab .mobile-inline-description-tab .toggle-content.mobile-inline-description .tab-popup-header {
+        display: none;
+    }
+
+    .productView-tab .mobile-inline-description-tab .toggle-content.mobile-inline-description .tab-popup-content {
+        padding: 0;
+        max-height: none;
+        overflow: visible;
+    }
+
+    .productView-tab .mobile-inline-description-tab .toggle-content.mobile-inline-description.is-mobile-description-collapsed .mobile-inline-description-content {
+        max-height: 76px;
+        overflow: hidden;
+    }
+
+    .productView-tab .mobile-inline-description-tab .toggle-content.mobile-inline-description.is-mobile-description-collapsed.is-expanded .mobile-inline-description-content {
+        max-height: none;
+    }
+
+    .mobile-description-toggle {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--color-text);
+        font: inherit;
+        font-weight: var(--font-weight-semibold);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        cursor: pointer;
     }
     
     .tab-showMore.is-show {

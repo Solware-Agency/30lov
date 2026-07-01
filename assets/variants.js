@@ -270,6 +270,8 @@ class VariantSelects extends HTMLElement {
 
                 if (sourceDesc && destinationDesc) {
                     destinationDesc.innerHTML = sourceDesc.innerHTML;
+                    destinationDesc.classList.toggle('is-mobile-description-collapsed', sourceDesc.classList.contains('is-mobile-description-collapsed'));
+                    destinationDesc.classList.remove('is-expanded');
                     if (destinationDesc.closest('.toggle-content--height')){
                         destinationDesc.style.maxHeight = null;
                     }

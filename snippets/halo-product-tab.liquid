@@ -107,6 +107,17 @@
 					endif
 				endif
 
+				assign is_mobile_inline_description = false
+				assign mobile_description_is_long = false
+				assign mobile_description_limit = 180
+				if block.type == 'description'
+					assign is_mobile_inline_description = true
+					assign mobile_description_plain = content | strip_html | strip
+					if mobile_description_plain.size > mobile_description_limit
+						assign mobile_description_is_long = true
+					endif
+				endif
+
 				if block.type == 'description' or block.type == 'custom'
 					assign style_mobile = false
 					if block.settings.open_tab_mobile
@@ -117,10 +128,13 @@
 					elsif tab_layout_mobile == 'vertical_sidebar'
 						assign style_mobile = 'sidebar-mobile'
 					endif
+					if is_mobile_inline_description
+						assign style_mobile = 'mobile-inline-description'
+					endif
 				endif
 			-%}
 			{%- if has_tab and title != blank -%}
-				<div class="tab-content{% if block.type == 'description' %}{% if tab_layout == 'vertical' or tab_layout == 'horizontal' %} is-active{% endif %}{% endif %}" id="tab-{{ title | escape | handleize }}">
+				<div class="tab-content{% if block.type == 'description' %}{% if tab_layout == 'vertical' or tab_layout == 'horizontal' %} is-active{% endif %} mobile-inline-description-tab{% endif %}" id="tab-{{ title | escape | handleize }}">
 					<div class="toggle-title{% if settings.product_page_layout == 'full_width_2' or template.suffix == 'template-full-width-2' %} title-content-full{% endif %}">
 		                <a class="toggleLink{% if style_mobile %} {{ style_mobile }}{% endif %}{% if block.type == 'description' and tab_layout == 'vertical' %} is-open{% endif %}" data-collapsible href="#tab-{{ title | escape | handleize }}-mobile">
 		                    <span class="text">
@@ -139,7 +153,7 @@
 		                    {% endif %}
 		                </a>
 		            </div>
-		            <div class="toggle-content{% if block.type == 'description' %}{% if tab_layout == 'vertical' or tab_layout == 'horizontal' %} is-active{% endif %}{% endif %}{% if style_mobile %} {{ style_mobile }}{% endif %}{% if block.settings.enable_btn_show_more %} toggle-content--height{% endif %}" id="tab-{{ title | escape | handleize }}-mobile"{% if block.settings.enable_btn_show_more %} style="--maximum-des-to-show: {{ block.settings.maximum_des_to_show | append: 'px'}}"{% endif %}{% if block.type == 'description' %} product-description-tab data-product-description-{{ product.id }}{% endif %}>
+		            <div class="toggle-content{% if block.type == 'description' %}{% if tab_layout == 'vertical' or tab_layout == 'horizontal' %} is-active{% endif %}{% endif %}{% if style_mobile %} {{ style_mobile }}{% endif %}{% if block.settings.enable_btn_show_more %} toggle-content--height{% endif %}{% if mobile_description_is_long %} is-mobile-description-collapsed{% endif %}" id="tab-{{ title | escape | handleize }}-mobile"{% if block.settings.enable_btn_show_more %} style="--maximum-des-to-show: {{ block.settings.maximum_des_to_show | append: 'px'}}"{% endif %}{% if block.type == 'description' %} product-description-tab data-product-description-{{ product.id }}{% endif %}>
 						{%- if tab_layout == 'vertical_sidebar' or style_mobile == 'sidebar-mobile' or style_mobile == 'popup-mobile' -%}
 							<div class="tab-popup-header">
 								<h5>
@@ -149,7 +163,9 @@
 							</div>
 							<div class="tab-popup-content">
 						{%- endif -%}
-							{{ content }}
+							<div class="{% if is_mobile_inline_description %}mobile-inline-description-content{% endif %}">
+								{{ content }}
+							</div>
 							{%- if block.settings.enable_btn_show_more -%}
 								{% assign letter = content | size %}
 								<div class="tab-showMore is-show" data-letter="{{ letter }}" data-des-max="{{ block.settings.maximum_des_to_show }}">
@@ -157,6 +173,11 @@
 										{{ 'products.product.read_more' | t }}
 									</a>
 								</div>
+							{%- endif -%}
+							{%- if mobile_description_is_long -%}
+								<button type="button" class="mobile-description-toggle" data-mobile-description-toggle data-show-more-text="{{ 'products.product.read_more' | t }}" data-show-less-text="{{ 'products.product.read_less' | t }}">
+									{{ 'products.product.read_more' | t }}
+								</button>
 							{%- endif -%}
 						{%- if tab_layout == 'vertical_sidebar' or style_mobile == 'sidebar-mobile' or style_mobile == 'popup-mobile' -%}
 							</div>

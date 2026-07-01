@@ -26,7 +26,10 @@ class ProductTabs extends HTMLElement {
         }
 
         document.addEventListener('click', e => {
-            if (e.target.matches('[data-show-more-toogle]') || e.target.closest('[data-show-more-toogle]')) {
+            if (e.target.matches('[data-mobile-description-toggle]') || e.target.closest('[data-mobile-description-toggle]')) {
+                this.mobileDescriptionToggle(e)
+            }
+            else if (e.target.matches('[data-show-more-toogle]') || e.target.closest('[data-show-more-toogle]')) {
                 this.readMoreReadLess(e)
             }
             else if (e.target.matches('.pdViewTab-close') || e.target.closest('.pdViewTab-close')) {
@@ -94,6 +97,10 @@ class ProductTabs extends HTMLElement {
         var $this = event.currentTarget,
             $thisContent = $this.parentNode.nextElementSibling;
 
+        if ($this.classList.contains('mobile-inline-description') && window.innerWidth <= 551) {
+            return;
+        }
+
         if ($this.classList.contains('popup-mobile') && window.innerWidth <= 551) {
             if ($($thisContent).hasClass('is-show')) {
                 $($thisContent).removeClass('is-show');
@@ -156,6 +163,17 @@ class ProductTabs extends HTMLElement {
             $this.innerText = textShowLess;
             document.getElementById(`${id}`).style.maxHeight = 'unset';
         }
+    }
+
+    mobileDescriptionToggle(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const button = event.target.closest('[data-mobile-description-toggle]');
+        const content = button.closest('.toggle-content');
+        const isExpanded = content.classList.toggle('is-expanded');
+
+        button.innerText = isExpanded ? button.dataset.showLessText : button.dataset.showMoreText;
     }
 
     productTabClose(event) {
